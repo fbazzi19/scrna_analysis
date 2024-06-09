@@ -259,7 +259,7 @@ FeaturePlot(decidua12_25, features = "NKG7",
 FeaturePlot(decidua12_25, features = "TIMP3",
             cols = c(colorpallete[6], colorpallete[7])) +
   theme(plot.background = element_rect(fill = "#F9FCF3"))
-FeaturePlot(decidua12_25, features = c("SERPINA3", "BDKRB1", "NKG7", "CD3D"))
+FeaturePlot(decidua12_25, features = c("PRL", "IGFBP1", "NKG7", "CD3D"))
 
 decidua12_25.markers %>%
   group_by(cluster) %>%
@@ -355,7 +355,7 @@ cluster201.markers <- cluster201.markers[order(cluster201.markers$avg_log2FC),]
 head(cluster201.markers, n = 10)
 
 #Final Labels
-#0:Fibroblasts, 1:Fibroblasts , 2:Fibroblasts
+#0:Decidual Stromal Cells, 1:Fibroblasts , 2:Fibroblasts
 
 
 #----4----
@@ -431,14 +431,15 @@ head(cluster9.markers, n = 15)
 #----Cell Types and Markers----
 #NK Cells: cluster 3,6 (Marker: KLRB1)
 #Gamma Delta T Cells: cluster 11 (Marker: TOP2A)
-#Fibroblasts: cluster 0,1,2 (Marker: SCARA5)
+#Fibroblasts: cluster 1,2 (Marker: SCARA5)
+#Decidual Stomal Cells: cluster 0 (Marker: PRL)
 #Endothelial Cells: cluster 8,10 (Marker: ERG)
 #"Pancreatic Stellate cells: cluster 9 (Marker: NDUFA4L2, RGS5)
 #Dendritic Cells: cluster 4 (Marker: TREM2)
 #Ductal Cells: Cluster 7 (Marker: ELF3)
 #T Cells: Cluster 5 (Marker: IL7R)
 
-marker_list <- c("NKG7", "TOP2A", "SCARA5", "ERG", "NDUFA4L2",
+marker_list <- c("NKG7", "TOP2A", "SCARA5", "PRL", "ERG", "NDUFA4L2",
                  "TREM2", "ELF3", "CD3D")
 
 #plotting of marker genes
@@ -451,12 +452,16 @@ DotPlot(decidua12_25, features = marker_list, cols=c("lightgrey", colorpallete[2
 
 
 #add new labels to seurat obj
-new.cluster.ids <- c("Fibroblast", "Fibroblast", "Fibroblast",
+new.cluster.ids <- c("Decidualized Stromal", "Fibroblast", "Fibroblast",
                      "NK", "Dendritic", "T",
                      "NK", "Ductal", "Endothelial",
                      "Pancreatic Stellate", "Endothelial", "Gamma Delta T")
 names(new.cluster.ids) <- levels(decidua12_25)
 decidua12_25 <- RenameIdents(decidua12_25, new.cluster.ids)
 DimPlot(decidua12_25, reduction = "umap", label = TRUE, pt.size = 0.5) +
+  theme(plot.background = element_rect(fill = "#F9FCF3"))+
+  NoLegend()
+
+DimPlot(decidua12_25, reduction = "tsne", label = TRUE, pt.size = 0.5) +
   theme(plot.background = element_rect(fill = "#F9FCF3"))+
   NoLegend()
